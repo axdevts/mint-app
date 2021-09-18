@@ -1,6 +1,6 @@
 require("dotenv").config();
 const contractABI = require("../contract-abi.json");
-const contractAddress = "0x0B0BFC4a121ff9E71C9738Bca451A8B097104a64";
+const contractAddress = "0xd8Cd24126D2409BAC10ce8dfe7FcbD37E992CA3f";
 const Web3 = require('web3');
 const web3 = new Web3('https://rinkeby.infura.io/v3/ec74d1b14a7948388274b61bbd842489');
 
@@ -108,7 +108,7 @@ export const mintNFT = async (mintNum) => {
 		to: contractAddress, // Required except during contract publications.
 		from: window.ethereum.selectedAddress, // must match user's active address.
 		data: window.contract.methods
-			.presaleBuy(mintNum)
+			.buy(mintNum)
 			.encodeABI(),
 	};
 

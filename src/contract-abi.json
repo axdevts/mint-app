@@ -190,16 +190,6 @@
 	{
 		"inputs": [
 			{
-				"internalType": "bytes32",
-				"name": "hash",
-				"type": "bytes32"
-			},
-			{
-				"internalType": "string",
-				"name": "nonce",
-				"type": "string"
-			},
-			{
 				"internalType": "uint256",
 				"name": "tokenQuantity",
 				"type": "uint256"
