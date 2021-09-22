@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import axios from "axios";
 import {
 	connectWallet,
 	getCurrentWalletConnected,
@@ -9,7 +10,25 @@ const Minter = (props) => {
 	const [walletAddress, setWallet] = useState("");
 	const [status, setStatus] = useState("");
 
-	const [mintNum, setMintNum] = useState("")
+	const [mintNum, setMintNum] = useState("");
+	const [name, setName] = useState("");
+	const [description, setDescription] = useState("");
+	const [imageUrl, setImageUrl] = useState("");
+	const [attri, setAttri] = useState("");
+	// const [post, setPost] = useState(null);
+
+	const baseURL = "http://localhost:8080/update-todo";
+	const metaData = {
+		"name": name,
+		"description": description,
+		"image": imageUrl,
+		"attributes": [
+			{
+				"trait_type": "trait",
+				"value": attri
+			}
+		]
+	}
 
 	useEffect(async () => {
 		const { address, status } = await getCurrentWalletConnected();
@@ -52,12 +71,29 @@ const Minter = (props) => {
 	};
 
 	const onMintPressed = async () => {
-		const { success, status } = await mintNFT(mintNum);
+		const getData = await axios
+			.post(baseURL, {
+				metaData,
+			})
+			.then((response) => {
+				console.log(response);
+			}, (error) => {
+				console.log(error);
+			});
+		console.log(getData);
+
+		const { success, status } = await mintNFT(mintNum, getData);
 		setStatus(status);
 		if (success) {
 			setMintNum("");
+			setName("");
+			setDescription("");
+			setImageUrl("");
+			setAttri("");
 		}
 	};
+
+	// if (!post) return null;
 
 	return (
 		<div className="Minter">
@@ -80,8 +116,28 @@ const Minter = (props) => {
 			<form>
 				<input
 					type="text"
-					placeholder="Please type"
+					placeholder="Please type number"
 					onChange={(event) => setMintNum(event.target.value)}
+				/>
+				<input
+					type="text"
+					placeholder="Please type name"
+					onChange={(event) => setName(event.target.value)}
+				/>
+				<input
+					tuype="text"
+					placeholder="Please type description"
+					onChange={(event) => setDescription(event.target.value)}
+				/>
+				<input
+					type="text"
+					placeholder="Please type image url"
+					onChange={(event) => setImageUrl(event.target.value)}
+				/>
+				<input
+					type="text"
+					placeholder="Please type attributes"
+					onChange={(event) => setAttri(event.target.value)}
 				/>
 			</form>
 			<button id="mintButton" onClick={onMintPressed}>
@@ -91,6 +147,14 @@ const Minter = (props) => {
 			<p id="status" style={{ color: "red" }}>
 				{status}
 			</p>
+
+			{/* {post &&
+				<>
+					<h1>{post.title}</h1>
+					<p>{post.body}</p>
+
+				</>
+			} */}
 		</div>
 	);
 };

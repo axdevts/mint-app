@@ -5,6 +5,7 @@ const Web3 = require('web3');
 const web3 = new Web3('https://rinkeby.infura.io/v3/ec74d1b14a7948388274b61bbd842489');
 
 export const connectWallet = async () => {
+	console.log('window ehtereum-----', window.ethereum);
 	if (window.ethereum) {
 		try {
 			const addressArray = await window.ethereum.request({
@@ -86,8 +87,8 @@ async function loadContract() {
 	return new web3.eth.Contract(contractABI, contractAddress);
 }
 
-export const mintNFT = async (mintNum) => {
-	if (mintNum.trim() == "") {
+export const mintNFT = async (mintNum, data) => {
+	if (mintNum.trim() == "" || data.trim() == "") {
 		return {
 			success: false,
 			status: "❗Please make sure field are completed before minting.",
@@ -108,7 +109,7 @@ export const mintNFT = async (mintNum) => {
 		to: contractAddress, // Required except during contract publications.
 		from: window.ethereum.selectedAddress, // must match user's active address.
 		data: window.contract.methods
-			.buy(mintNum)
+			.buy(mintNum, data)
 			.encodeABI(),
 	};
 
