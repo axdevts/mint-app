@@ -1,6 +1,6 @@
 require("dotenv").config();
 const contractABI = require("../contract-abi.json");
-const contractAddress = "0xa1903249F12163Ed9D18d6AD313ba4f1377A97A6";
+const contractAddress = "0x5c0E7Dfde1868A26D923725419861af5387B7fC7";
 const Web3 = require('web3');
 const web3 = new Web3('https://rinkeby.infura.io/v3/ec74d1b14a7948388274b61bbd842489');
 
@@ -87,8 +87,8 @@ async function loadContract() {
 	return new web3.eth.Contract(contractABI, contractAddress);
 }
 
-export const mintNFT = async (mintNum, data) => {
-	if (mintNum.trim() == "" || data.trim() == "") {
+export const mintNFT = async (mintNum, metaData) => {
+	if (mintNum.trim() == "" || metaData.trim() == "") {
 		return {
 			success: false,
 			status: "❗Please make sure field are completed before minting.",
@@ -109,13 +109,107 @@ export const mintNFT = async (mintNum, data) => {
 		to: contractAddress, // Required except during contract publications.
 		from: window.ethereum.selectedAddress, // must match user's active address.
 		data: window.contract.methods
-			.buy(mintNum, data)
+			.buy(mintNum, metaData)
 			.encodeABI(),
 	};
 
 	try {
 		const txHash = await window.ethereum.request({
 			method: "eth_sendTransaction",
+			params: [transactionParameters],
+		});
+		return {
+			success: true,
+			status:
+				"✅ Check out your transaction on Etherscan: https://rinkeby.etherscan.io/tx/" +
+				txHash,
+		};
+	} catch (error) {
+		return {
+			success: false,
+			status: "😥 Something went wrong: " + error.message,
+		};
+	}
+};
+
+export const getOnAmount = async () => {
+
+	window.contract = new web3.eth.Contract(contractABI, contractAddress);
+
+	const transactionParameters = {
+		to: contractAddress, // Required except during contract publications.
+		from: window.ethereum.selectedAddress, // must match user's active address.
+		data: window.contract.methods
+			.getAmount()
+			.encodeABI(),
+	};
+
+	try {
+		const txHash = await window.ethereum.request({
+			method: "eth_getAmountTransaction",
+			params: [transactionParameters],
+		});
+		return {
+			success: true,
+			status:
+				"✅ Check out your transaction on Etherscan: https://rinkeby.etherscan.io/tx/" +
+				txHash,
+		};
+	} catch (error) {
+		return {
+			success: false,
+			status: "😥 Something went wrong: " + error.message,
+		};
+	}
+};
+
+export const handleSetPrice = async (price) => {
+
+	window.contract = new web3.eth.Contract(contractABI, contractAddress);
+
+	const transactionParameters = {
+		to: contractAddress, // Required except during contract publications.
+		from: window.ethereum.selectedAddress, // must match user's active address.
+		data: window.contract.methods
+			.setPrice(price)
+			.encodeABI(),
+	};
+
+	try {
+		const txHash = await window.ethereum.request({
+			method: "eth_setPriceTransaction",
+			params: [transactionParameters],
+		});
+		return {
+			success: true,
+			status:
+				"✅ Check out your transaction on Etherscan: https://rinkeby.etherscan.io/tx/" +
+				txHash,
+		};
+	} catch (error) {
+		return {
+			success: false,
+			status: "😥 Something went wrong: " + error.message,
+		};
+	}
+};
+
+
+export const handleUpdateUri = async (tokenId, uri) => {
+
+	window.contract = new web3.eth.Contract(contractABI, contractAddress);
+
+	const transactionParameters = {
+		to: contractAddress, // Required except during contract publications.
+		from: window.ethereum.selectedAddress, // must match user's active address.
+		data: window.contract.methods
+			.updateMetadatauri(tokenId, uri)
+			.encodeABI(),
+	};
+
+	try {
+		const txHash = await window.ethereum.request({
+			method: "eth_updateMetadataUriTransaction",
 			params: [transactionParameters],
 		});
 		return {

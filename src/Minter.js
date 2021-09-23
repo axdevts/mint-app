@@ -4,11 +4,17 @@ import {
 	connectWallet,
 	getCurrentWalletConnected,
 	mintNFT,
+	getOnAmount,
+	handleSetPrice,
+	handleUpdateUri
 } from "./util/interact.js";
 
 const Minter = (props) => {
 	const [walletAddress, setWallet] = useState("");
 	const [status, setStatus] = useState("");
+	const [amount, setAmount] = useState("");
+	const [price, setPrice] = useState("");
+	const [tokenId, setTokenId] = useState("");
 
 	const [mintNum, setMintNum] = useState("");
 	const [name, setName] = useState("");
@@ -71,18 +77,18 @@ const Minter = (props) => {
 	};
 
 	const onMintPressed = async () => {
-		const getData = await axios
-			.post(baseURL, {
-				metaData,
-			})
-			.then((response) => {
-				console.log(response);
-			}, (error) => {
-				console.log(error);
-			});
-		console.log(getData);
+		// const getData = await axios
+		// 	.post(baseURL, {
+		// 		metaData,
+		// 	})
+		// 	.then((response) => {
+		// 		console.log(response);
+		// 	}, (error) => {
+		// 		console.log(error);
+		// 	});
+		// console.log(getData);
 
-		const { success, status } = await mintNFT(mintNum, getData);
+		const { success, status } = await mintNFT(mintNum, metaData);
 		setStatus(status);
 		if (success) {
 			setMintNum("");
@@ -92,6 +98,30 @@ const Minter = (props) => {
 			setAttri("");
 		}
 	};
+
+	const handleAmount = async () => {
+		const { success, status } = await getOnAmount();
+		setStatus(status);
+		if (success) {
+			console.log('success get amount')
+		}
+	}
+
+	const handlePrice = async () => {
+		const { success, status } = await handleSetPrice(price);
+		setStatus(status);
+		if (success) {
+			console.log('success set price')
+		}
+	}
+
+	const updateUri = async () => {
+		const { success, status } = await handleUpdateUri(tokenId, imageUrl);
+		setStatus(status);
+		if (success) {
+			console.log('success update metadata uri')
+		}
+	}
 
 	// if (!post) return null;
 
@@ -124,6 +154,7 @@ const Minter = (props) => {
 					placeholder="Please type name"
 					onChange={(event) => setName(event.target.value)}
 				/>
+
 				<input
 					tuype="text"
 					placeholder="Please type description"
@@ -134,6 +165,7 @@ const Minter = (props) => {
 					placeholder="Please type image url"
 					onChange={(event) => setImageUrl(event.target.value)}
 				/>
+				<button id="set-uri" onClick={updateUri}>Update Uri</button>
 				<input
 					type="text"
 					placeholder="Please type attributes"
@@ -143,6 +175,16 @@ const Minter = (props) => {
 			<button id="mintButton" onClick={onMintPressed}>
 				Mint NFT
 			</button>
+
+			<button id="getAmountButton" onClick={handleAmount}>
+				Get Amount
+			</button>
+			{amount &&
+				<span>{amount}</span>
+			}
+			<input type="text" className="price" onChange={(event) => setPrice(event.target.value)} />
+			<input type="text" className="tokenid" onChange={(event) => setTokenId(event.target.value)} />
+			<button id="set-price" onClick={handlePrice}>Set Price</button>
 
 			<p id="status" style={{ color: "red" }}>
 				{status}
