@@ -162,29 +162,33 @@ const Minter = (props) => {
 				/>
 				<input
 					type="text"
+					className="mt-4"
 					placeholder="Please type image url"
 					onChange={(event) => setImageUrl(event.target.value)}
 				/>
-				<button id="set-uri" onClick={updateUri}>Update Uri</button>
+				<button id="set-uri" className="mt-4" onClick={updateUri}>Update Uri</button>
 				<input
 					type="text"
 					placeholder="Please type attributes"
 					onChange={(event) => setAttri(event.target.value)}
 				/>
 			</form>
-			<button id="mintButton" onClick={onMintPressed}>
+			<button id="mintButton" className="mt-4" onClick={onMintPressed}>
 				Mint NFT
 			</button>
 
-			<button id="getAmountButton" onClick={handleAmount}>
-				Get Amount
-			</button>
-			{amount &&
-				<span>{amount}</span>
-			}
-			<input type="text" className="price" onChange={(event) => setPrice(event.target.value)} />
-			<input type="text" className="tokenid" onChange={(event) => setTokenId(event.target.value)} />
-			<button id="set-price" onClick={handlePrice}>Set Price</button>
+			<div className="mt-4">
+				<button id="getAmountButton" onClick={handleAmount}>
+					Get Amount
+				</button>
+				{amount &&
+					<span>{amount}</span>
+				}
+			</div>
+
+			<input type="text" className="price mt-4" placeholder="price" onChange={(event) => setPrice(event.target.value)} />
+			<input type="text" className="tokenid" placeholder="token id" onChange={(event) => setTokenId(event.target.value)} />
+			<button id="set-price" className="mt-4" onClick={handlePrice}>Set Price</button>
 
 			<p id="status" style={{ color: "red" }}>
 				{status}

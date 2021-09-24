@@ -87,12 +87,24 @@ async function loadContract() {
 	return new web3.eth.Contract(contractABI, contractAddress);
 }
 
-export const mintNFT = async (mintNum, metaData) => {
-	if (mintNum.trim() == "" || metaData.trim() == "") {
+export const mintNFT = async (mintNum) => {
+	if (mintNum.trim() == "") {
 		return {
 			success: false,
 			status: "❗Please make sure field are completed before minting.",
 		};
+	}
+
+	const metaDataUri = {
+		"name": "test",
+		"description": "test",
+		"image": "QmfTho4g3XCdLNiuy22qgWGzPitkZXHXkkPhmqrCvN5otD",
+		"attributes": [
+			{
+				"trait_type": "trait",
+				"value": "1"
+			}
+		]
 	}
 
 	//make metadata
@@ -109,7 +121,7 @@ export const mintNFT = async (mintNum, metaData) => {
 		to: contractAddress, // Required except during contract publications.
 		from: window.ethereum.selectedAddress, // must match user's active address.
 		data: window.contract.methods
-			.buy(mintNum, metaData)
+			.buy(mintNum, metaDataUri)
 			.encodeABI(),
 	};
 
