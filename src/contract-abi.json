@@ -195,9 +195,9 @@
 				"type": "uint256"
 			},
 			{
-				"internalType": "bytes",
-				"name": "_data",
-				"type": "bytes"
+				"internalType": "string[]",
+				"name": "uris",
+				"type": "string[]"
 			}
 		],
 		"name": "buy",
@@ -747,6 +747,19 @@
 			}
 		],
 		"name": "tokenByIndex",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "tokenIdAmount",
 		"outputs": [
 			{
 				"internalType": "uint256",

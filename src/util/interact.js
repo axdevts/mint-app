@@ -1,6 +1,6 @@
 require("dotenv").config();
 const contractABI = require("../contract-abi.json");
-const contractAddress = "0x5c0E7Dfde1868A26D923725419861af5387B7fC7";
+const contractAddress = "0x6fC927681fb26da86Cc46Fe9559e3Bb3e8A05B30";
 const Web3 = require('web3');
 const web3 = new Web3('https://rinkeby.infura.io/v3/ec74d1b14a7948388274b61bbd842489');
 
