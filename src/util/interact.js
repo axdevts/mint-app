@@ -2,7 +2,7 @@ require("dotenv").config();
 const { create } = require('ipfs-http-client')
 const ipfsClient = create("http://167.99.110.177:5001");
 const contractABI = require("../contract-abi.json");
-const contractAddress = "0x9f468eDD86F7898F00187f31b04ec91340632270";
+const contractAddress = "0x22fca762f136a1d4E6bFeb6835C802E0E446258d";
 const Web3 = require('web3');
 const web3 = new Web3('https://rinkeby.infura.io/v3/ec74d1b14a7948388274b61bbd842489');
 
@@ -195,7 +195,7 @@ export const mintNFT = async (mintNum, metaData) => {
     //     to: contractAddress, // Required except during contract publications.
     //     from: window.ethereum.selectedAddress, // must match user's active address.
     //     data: window.contract.methods
-    //         .buy(mintNum, metaDataUri)
+    //         .mint(mintNum, metaDataUri)
     //         .encodeABI(),
     // };
 
