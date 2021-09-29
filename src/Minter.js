@@ -1,40 +1,19 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+// import axios from "axios";
 import {
 	connectWallet,
 	getCurrentWalletConnected,
 	mintNFT,
-	getOnAmount,
-	handleSetPrice,
-	handleUpdateUri
 } from "./util/interact.js";
 
-const Minter = (props) => {
+const Minter = () => {
 	const [walletAddress, setWallet] = useState("");
 	const [status, setStatus] = useState("");
-	const [amount, setAmount] = useState("");
-	const [price, setPrice] = useState("");
-	const [tokenId, setTokenId] = useState("");
 
 	const [mintNum, setMintNum] = useState("");
-	const [name, setName] = useState("");
-	const [description, setDescription] = useState("");
-	const [imageUrl, setImageUrl] = useState("");
-	const [attri, setAttri] = useState("");
 	// const [post, setPost] = useState(null);
 
 	const baseURL = "http://localhost:8080/update-todo";
-	const metaData = {
-		"name": name,
-		"description": description,
-		"image": imageUrl,
-		"attributes": [
-			{
-				"trait_type": "trait",
-				"value": attri
-			}
-		]
-	}
 
 	useEffect(async () => {
 		const { address, status } = await getCurrentWalletConnected();
@@ -88,40 +67,12 @@ const Minter = (props) => {
 		// 	});
 		// console.log(getData);
 
-		const { success, status } = await mintNFT(mintNum, metaData);
+		const { success, status } = await mintNFT(mintNum);
 		setStatus(status);
 		if (success) {
 			setMintNum("");
-			setName("");
-			setDescription("");
-			setImageUrl("");
-			setAttri("");
 		}
 	};
-
-	const handleAmount = async () => {
-		const { success, status } = await getOnAmount();
-		setStatus(status);
-		if (success) {
-			console.log('success get amount')
-		}
-	}
-
-	const handlePrice = async () => {
-		const { success, status } = await handleSetPrice(price);
-		setStatus(status);
-		if (success) {
-			console.log('success set price')
-		}
-	}
-
-	const updateUri = async () => {
-		const { success, status } = await handleUpdateUri(tokenId, imageUrl);
-		setStatus(status);
-		if (success) {
-			console.log('success update metadata uri')
-		}
-	}
 
 	// if (!post) return null;
 
@@ -149,46 +100,10 @@ const Minter = (props) => {
 					placeholder="Please type number"
 					onChange={(event) => setMintNum(event.target.value)}
 				/>
-				<input
-					type="text"
-					placeholder="Please type name"
-					onChange={(event) => setName(event.target.value)}
-				/>
-
-				<input
-					tuype="text"
-					placeholder="Please type description"
-					onChange={(event) => setDescription(event.target.value)}
-				/>
-				<input
-					type="text"
-					className="mt-4"
-					placeholder="Please type image url"
-					onChange={(event) => setImageUrl(event.target.value)}
-				/>
-				<button id="set-uri" className="mt-4" onClick={updateUri}>Update Uri</button>
-				<input
-					type="text"
-					placeholder="Please type attributes"
-					onChange={(event) => setAttri(event.target.value)}
-				/>
 			</form>
 			<button id="mintButton" className="mt-4" onClick={onMintPressed}>
 				Mint NFT
 			</button>
-
-			<div className="mt-4">
-				<button id="getAmountButton" onClick={handleAmount}>
-					Get Amount
-				</button>
-				{amount &&
-					<span>{amount}</span>
-				}
-			</div>
-
-			<input type="text" className="price mt-4" placeholder="price" onChange={(event) => setPrice(event.target.value)} />
-			<input type="text" className="tokenid" placeholder="token id" onChange={(event) => setTokenId(event.target.value)} />
-			<button id="set-price" className="mt-4" onClick={handlePrice}>Set Price</button>
 
 			<p id="status" style={{ color: "red" }}>
 				{status}
