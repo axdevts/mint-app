@@ -100,7 +100,7 @@
 	},
 	{
 		"inputs": [],
-		"name": "SVS_MAX",
+		"name": "BBG_MAX",
 		"outputs": [
 			{
 				"internalType": "uint256",
@@ -113,7 +113,7 @@
 	},
 	{
 		"inputs": [],
-		"name": "SVS_PER_MINT",
+		"name": "BBG_PER_MINT",
 		"outputs": [
 			{
 				"internalType": "uint256",
@@ -126,7 +126,7 @@
 	},
 	{
 		"inputs": [],
-		"name": "SVS_PRICE",
+		"name": "BBG_PRICE",
 		"outputs": [
 			{
 				"internalType": "uint256",
@@ -185,24 +185,6 @@
 			}
 		],
 		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "tokenQuantity",
-				"type": "uint256"
-			},
-			{
-				"internalType": "string[]",
-				"name": "uris",
-				"type": "string[]"
-			}
-		],
-		"name": "buy",
-		"outputs": [],
-		"stateMutability": "payable",
 		"type": "function"
 	},
 	{
@@ -356,6 +338,24 @@
 			}
 		],
 		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "tokenQuantity",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string[]",
+				"name": "uris",
+				"type": "string[]"
+			}
+		],
+		"name": "mint",
+		"outputs": [],
+		"stateMutability": "payable",
 		"type": "function"
 	},
 	{

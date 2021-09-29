@@ -2,7 +2,7 @@ require("dotenv").config();
 const { create } = require('ipfs-http-client')
 const ipfsClient = create("http://167.99.110.177:5001");
 const contractABI = require("../contract-abi.json");
-const contractAddress = "0x6fC927681fb26da86Cc46Fe9559e3Bb3e8A05B30";
+const contractAddress = "0x9f468eDD86F7898F00187f31b04ec91340632270";
 const Web3 = require('web3');
 const web3 = new Web3('https://rinkeby.infura.io/v3/ec74d1b14a7948388274b61bbd842489');
 
