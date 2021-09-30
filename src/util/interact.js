@@ -8,7 +8,6 @@ const Web3 = require('web3');
 const web3 = new Web3('https://rinkeby.infura.io/v3/ec74d1b14a7948388274b61bbd842489');
 
 export const connectWallet = async () => {
-	console.log('window ehtereum-----', window.ethereum);
 	if (window.ethereum) {
 		try {
 			const addressArray = await window.ethereum.request({
@@ -90,13 +89,18 @@ async function loadContract() {
 	return new web3.eth.Contract(contractABI, contractAddress);
 }
 
-export const mintNFT = async (mintNum, metaData) => {
+export const mintNFT = async (mintNum) => {
 	if (mintNum.trim() == "") {
 		return {
 			success: false,
 			status: "❗Please make sure field are completed before minting.",
 		};
 	}
+
+	// const imageEl = metaData.image;
+	// const ipfsResult = await ipfsClient.add(imageEl);
+	// const ipfsImg = ipfsResult.cid.toString();
+	// console.log('img hash info', ipfsImg);
 
 	const fileDetails = [
 		{
@@ -177,92 +181,33 @@ export const mintNFT = async (mintNum, metaData) => {
 	const result = await ipfsClient.add(fileDetails, options);
 	console.log('result from ipfs', result.cid.toString());
 
-	// }
-	// var result = await ipfsClient.add(fileDetails, options);
-	// console.log('result info', result)
-	// console.log('result from ipfs', result.cid.toString());
+	window.contract = new web3.eth.Contract(contractABI, contractAddress);
 
-	// for (let i = 0; i < 10; i++) {
-	//     const fileDetails = {
-	//         path: `/test/${i}`,
-	//         content: JSON.stringify({
-	//             "name": `metaData.name${i}`,
-	//             "description": `metaData.description${i}`,
-	//             "image": `ipfsImg${i}`,
-	//             "attributes": [
-	//                 {
-	//                     "trait_type": "trait",
-	//                     "value": i
-	//                 }
-	//             ]
-	//         })
-	//     }
-	//     // const writingFIleInfo = await ipfsClient.files.write(
-	//     //     '/create',
-	//     //     fileDetails,
-	//     //     { create: true })
-	//     const options = {
-	//         wrapWithDirectory: true,
-	//         multihash: "QmTv49kC5t8qSbgfZCeUmqDr3shgF45xMFdCu5Ww7vZcZU",
-	//         progress: (prog) => console.log(`received: ${prog}`)
-	//     }
-	//     var ipfsHash = await ipfsClient.add(
-	//         fileDetails,
-	//         options
-	//     );
-	//     console.log('ipfs hash info', ipfsHash);
-	// }
-
-
-	return {
-		success: true,
-		status:
-			"✅ Check out your transaction on Etherscan: https://rinkeby.etherscan.io/tx/"
+	const transactionParameters = {
+		to: contractAddress, // Required except during contract publications.
+		from: window.ethereum.selectedAddress, // must match user's active address.
+		data: window.contract.methods
+			.preSale(mintNum)
+			.encodeABI(),
 	};
 
-	// const metaDataUri = {
-	//     "name": "test",
-	//     "description": "test",
-	//     "image": "https://ipfs.io/ipfs/QmQqzMTavQgT4f4T5v6PWBp7XNKtoPmC9jvn12WPT3gkSE",
-	//     "attributes": [
-	//         {
-	//             "trait_type": "trait",
-	//             "value": "1"
-	//         }
-	//     ]
-	// }
-	// const result = await ipfsClient.add(newParams);
-	// const newMetaDataUri = result.cid.toString();
-	// const tokenURI = `https://ipfs.io/ipfs/${newMetaDataUri}`;
-	// console.log('tokenURI uri is------', tokenURI);
-
-	// window.contract = new web3.eth.Contract(contractABI, contractAddress);
-
-	// const transactionParameters = {
-	//     to: contractAddress, // Required except during contract publications.
-	//     from: window.ethereum.selectedAddress, // must match user's active address.
-	//     data: window.contract.methods
-	//         .mint(mintNum, metaDataUri)
-	//         .encodeABI(),
-	// };
-
-	// try {
-	//     const txHash = await window.ethereum.request({
-	//         method: "eth_sendTransaction",
-	//         params: [transactionParameters],
-	//     });
-	//     return {
-	//         success: true,
-	//         status:
-	//             "✅ Check out your transaction on Etherscan: https://rinkeby.etherscan.io/tx/" +
-	//             txHash,
-	//     };
-	// } catch (error) {
-	//     return {
-	//         success: false,
-	//         status: "😥 Something went wrong: " + error.message,
-	//     };
-	// }
+	try {
+		const txHash = await window.ethereum.request({
+			method: "eth_sendTransaction",
+			params: [transactionParameters],
+		});
+		return {
+			success: true,
+			status:
+				"✅ Check out your transaction on Etherscan: https://rinkeby.etherscan.io/tx/" +
+				txHash,
+		};
+	} catch (error) {
+		return {
+			success: false,
+			status: "😥 Something went wrong: " + error.message,
+		};
+	}
 };
 
 export const getOnAmount = async () => {
